@@ -1,0 +1,35 @@
+pipeline {
+    agent any
+     tools { 
+        maven 'Maven-3.3.9' 
+        jdk 'Java 1.7.0' 
+    }
+
+    stages {
+        stage ('Initialize') {
+            steps {
+                sh '''
+                    echo "PATH = ${PATH}"
+                    echo "M2_HOME = ${M2_HOME}"
+                ''' 
+            }
+        }
+        stage('Build') {
+            steps {
+                echo 'Building..'
+                echo "Running ${env.BUILD_ID} on Jenkins"
+                sh 'mvn install'
+            }
+        }
+        stage('Test') {
+            steps {
+                echo 'Testing..'
+            }
+        }
+        stage('Deploy') {
+            steps {
+                echo 'Deploying....'
+            }
+        }
+    }
+}
