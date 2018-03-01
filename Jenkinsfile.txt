@@ -17,12 +17,13 @@ pipeline {
             steps {
                 echo 'Building..'
                 echo "Running ${env.BUILD_ID} on Jenkins"
-                sh 'mvn install'
+                sh 'mvn clean install'
             }
         }
         stage('Test') {
             steps {
                 echo 'Testing..'
+                 sh 'mvn clean test'
             }
         }
         stage('Deploy') {
