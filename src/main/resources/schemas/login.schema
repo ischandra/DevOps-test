@@ -1,0 +1,12 @@
+# Credentials / auth test accounts. Good candidate for --edge-rate to fuzz login forms.
+userId:    sequence(1)
+firstName: firstName
+lastName:  lastName
+username:  username                            | unique
+email:     email(test.example.com)             | unique
+password:  password(14)
+role:      oneOf(USER:85, ADMIN:5, SUPPORT:7, AUDITOR:3)
+mfaEnabled: boolean(0.6)
+locked:    boolean(0.05)
+lastLoginIp: ipv4                              | null=0.15
+lastLoginAt: datetime(2026-01-01, 2026-06-30)  | null=0.15

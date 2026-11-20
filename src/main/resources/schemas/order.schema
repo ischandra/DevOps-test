@@ -1,0 +1,13 @@
+# E-commerce orders - pair with customer.schema (customerId range 100000..100999).
+orderId:       pattern(ORD-######-??)          | unique
+customerId:    int(100000, 100999)
+orderDate:     datetime(2025-01-01, 2026-06-30)
+status:        oneOf(PLACED:15, PAID:20, SHIPPED:25, DELIVERED:35, CANCELLED:4, REFUNDED:1)
+currency:      oneOf(USD:70, EUR:15, GBP:10, INR:5)
+itemCount:     int(1, 12)
+amount:        decimal(5.00, 2500.00, 2)
+discountCode:  pattern(SAVE##)                 | null=0.8
+paymentMethod: oneOf(CARD:70, PAYPAL:15, BANK_TRANSFER:10, GIFT_CARD:5)
+cardNumber:    creditCard
+shippingAddress: address
+notes:         text(3, 15)                     | null=0.7

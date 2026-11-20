@@ -1,0 +1,10 @@
+# Product catalogue.
+sku:         pattern(SKU-???-####)             | unique
+name:        text(2, 4)
+category:    oneOf(Electronics, Books, Home, Garden, Toys, Apparel, Grocery, Sports)
+price:       decimal(0.99, 1999.99, 2)
+stock:       int(0, 5000)
+weightKg:    decimal(0.05, 40, 3)
+supplier:    company
+discontinued: boolean(0.05)
+releaseDate: date(2018-01-01, 2026-06-30)
