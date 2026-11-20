@@ -1,0 +1,38 @@
+name: api-synthetic-data
+
+on:
+  push:
+    paths: ["api-synthetic-data/**", ".github/workflows/api-synthetic-data.yml"]
+  pull_request:
+    paths: ["api-synthetic-data/**", ".github/workflows/api-synthetic-data.yml"]
+  workflow_dispatch:
+
+defaults:
+  run:
+    working-directory: api-synthetic-data
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        python-version: ["3.9", "3.12"]
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: ${{ matrix.python-version }}
+          cache: pip
+          cache-dependency-path: api-synthetic-data/requirements.txt
+      - run: pip install -r requirements.txt
+      - run: pytest -q
+      - name: Generate example data
+        run: |
+          python -m apisynth generate --openapi examples/shop-api.openapi.yaml \
+            --postman examples/inventory.postman_collection.json \
+            --sample "examples/employees-response.json -> POST /employees" \
+            --hostile -f json,jsonl,csv,apitest,postman -o synthetic-data --strict
+      - uses: actions/upload-artifact@v4
+        with:
+          name: synthetic-data-py${{ matrix.python-version }}
+          path: api-synthetic-data/synthetic-data/
